@@ -1,16 +1,15 @@
 import streamlit as st
-from api.frontend import crear
 
 st.title("Bienvenidos al Hyperespacio")
 
 planets= ["Earth", "Moon","Mars"]
+vip = ["SI","NO"]
 
 player_planet = st.selectbox("Escoje vuestro planeta de origen",planets)
-
-st.write(player_planet)
-
-st.text_input("Nombre",placeholder="Escribe tu nombre",)
+player_planet = st.selectbox("Escoje vuestro planeta de destino",planets)
 
 
-# Using object notation
-st.sidebar.button("Crear_Personaje",on_click=crear.crear())
+st.text_input("Nombre",placeholder="Escribe tu nombre")
+st.text_input("Edad",placeholder="Escribe tu edad")
+st.radio("¿Eres VIP?",vip)
+st.radio("¿Quieres viajar congelado? (Cryo Sleep)",vip)

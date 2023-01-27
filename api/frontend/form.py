@@ -1,28 +1,34 @@
+from os import path
 import streamlit as st
-
-def datos (nombre,edad,vip,cryo):
-    data = f"tu {nombre}, tienes {edad}, eres {vip}, cama {cryo}"
-    return data
-        
-pasajeros = []
-data_pasajeros = []
+import pandas as pd
+#st.set_theme('solarized')
 st.title("Bienvenidos al Hyperespacio")
-
-planets= ["Earth", "Moon","Mars"]
-vip = ["SI","NO"]
-sleep = ["SI","NO"]
 st.sidebar.write("Lista de Pasajeros")
-form = st.form("creacion_de_pasajero", clear_on_submit=True)
-nombre = form.text_input("Nombre",placeholder="Escribe tu nombre")
-edad = form.number_input("Edad",step=1,max_value=150,min_value=1)
-vip = form.checkbox("Eres VIP")
-cryo = form.checkbox("Tienes Cryo")
-form_button = form.form_submit_button(label='Crear')
-if form_button:
-    data_pasajeros.append(nombre)
-    data_pasajeros.append(edad)
-    data_pasajeros.append(vip)
-    data_pasajeros.append(cryo)
-    pasajeros.append(data_pasajeros)
-for index, pasajero in enumerate(pasajeros):
-    st.sidebar.write(f"Datos del pasajero: {pasajeros[index][0]},{pasajeros[index][1]}{pasajeros[index][2]},{pasajeros[index][3]}")
+
+
+# Read the CSV file into a dataframe
+df = pd.read_csv(r"C:\Users\fabri\OneDrive\Escritorio\space_ship_titanic\data\test.csv")
+
+# Select the column you want to display
+column_name = 'Name'
+st.sidebar.dataframe(df[column_name],width=400)
+numero_pasajero = st.sidebar.number_input("Escoje el numero de pasajero",min_value=1,max_value=4276,step=1)
+
+# Select the index number of the row you want to display
+index_number = numero_pasajero
+
+selected_row = df.iloc[index_number]
+
+# Iterate over the columns in the selected row
+for column, value in selected_row.iteritems():
+   if column != df.columns[-1]:
+        st.write(f"{column} : {value}")
+
+transporte = pd.read_csv(r"C:\Users\fabri\OneDrive\Escritorio\space_ship_titanic\data\resultados.csv")
+prediccion = st.button("Predecir")
+if prediccion:
+    if transporte['Transported'][index_number]:
+      st.write(f" el pasajero logro llegar al destino")
+    else:
+       st.write(f" el pasajero NO logro llegar al destino")
+
